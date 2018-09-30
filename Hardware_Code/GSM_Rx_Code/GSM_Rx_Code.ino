@@ -5,12 +5,18 @@
 #include <ESP8266WiFi.h>
 
 String apiWritekey = "3DGEBMEGUHCHM0TQ"; // replace with your THINGSPEAK WRITEAPI key here
-const char* ssid = "Shanu1"; // your wifi SSID name
-const char* password = "20167635" ;// wifi pasword
+const char* ssid = "Internet"; // your wifi SSID name
+const char* password = "photostate" ;// wifi pasword
  
 const char* server = "api.thingspeak.com";
-float resolution=3.3/1023;// 3.3 is the supply volt  & 1023 is max analog read value
 WiFiClient client;
+
+const char* host = "urfuel.000webhostapp.com";
+const int httpsPort = 443;
+
+// Use web browser to view and copy
+// SHA1 fingerprint of the certificate
+const char* fingerprint = "42 E9 F5 F9 30 21 14 CD 75 A1 41 EF 39 33 E8 D4 C7 97 B9 7C";
 
 SoftwareSerial GPRS(14, 12, false, 256);    //Syntax: SoftwareSerial::SoftwareSerial(int receivePin, int transmitPin, bool inverse_logic, unsigned int buffSize)
                                             // GPIO14 -> D5 pin, GPIO12 -> D6 pin on the NodeMCU
@@ -21,6 +27,7 @@ unsigned char buffer[64];
 String Number1 = "";
 String DateTime1 = "";
 String RcvdMessage1 = "";
+String myString;
 float Quality;
 float Quantity;
 float Latitude;
@@ -52,6 +59,7 @@ void setup() {
   Serial.print("NodeMcu connected to wifi...");
   Serial.println(ssid);
   Serial.println();
+  GPRS.println("AT");
 }
 
 void loop() {
@@ -179,6 +187,7 @@ void SendThingspeak(float Quality, float Quantity, float Latitude, float Longitu
      client.print(tsData.length());
      client.print("\n\n");  // the 2 carriage returns indicate closing of Header fields & starting of data
      client.print(tsData);
+     Serial.println("uploaded to Thingspeak server....");
      Serial.print("Quality is: ");
      Serial.println(Quality, 5);
      Serial.print("Quantity is: ");
@@ -187,7 +196,6 @@ void SendThingspeak(float Quality, float Quantity, float Latitude, float Longitu
      Serial.println(Latitude, 6);
      Serial.print("Longitude is: ");
      Serial.println(Longitude, 6);
-     Serial.println("uploaded to Thingspeak server....");
   }
   client.stop();
  
@@ -197,6 +205,55 @@ void SendThingspeak(float Quality, float Quantity, float Latitude, float Longitu
   delay(15000);
 }
 
+void SendWebhost(float Quality, float Quantity, float Latitude, float Longitude)
+{
+  WiFiClientSecure client;
+  Serial.print("connecting to ");
+  Serial.println(host);
+  while(!client.connect(host, httpsPort))
+  {delay(10);
+    }
+  if (!client.connect(host, httpsPort)) {
+    Serial.println("connection failed");
+    return;
+  }
+
+  if (client.verify(fingerprint, host)) {
+    Serial.println("certificate matches");
+  } else {
+    Serial.println("certificate doesn't match");
+  }
+
+  String url = "/insertintable.php?value=" + String(Quantity) + "&&user_id=7&&utime=" + String(Longitude, 6);
+  Serial.print("requesting URL: ");
+  Serial.println(url);
+
+  client.print(String("GET ") + url + " HTTP/1.1\r\n" +
+               "Host: " + host + "\r\n" +
+               "User-Agent: BuildFailureDetectorESP8266\r\n" +
+               "Connection: close\r\n\r\n");
+
+  Serial.println("request sent");
+  while (client.connected()) {
+    String line = client.readStringUntil('\n');
+    if (line == "\r") {
+      Serial.println("headers received");
+      break;
+    }
+  }
+  String line = client.readStringUntil('m');
+  if (line.startsWith("***")) {
+    Serial.println("esp8266/Arduino CI successfull!");
+  } else {
+    Serial.println("esp8266/Arduino CI has failed");
+  }
+  Serial.println("reply was:");
+  Serial.println("==========");
+  Serial.println(line);
+  Serial.println("==========");
+  Serial.println("closing connection");
+
+}
 void resetData()
 {
     Number1 = "";

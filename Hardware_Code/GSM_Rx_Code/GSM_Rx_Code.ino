@@ -135,19 +135,24 @@ void showData()
     Serial.print("Message1 is: ");
     Serial.print(RcvdMessage1);
     Serial.println();
+    myString = RcvdMessage1;
     Serial.print("Quality is: ");
-    Quality = (RcvdMessage1.substring(RcvdMessage1.indexOf("Quality=") + 8,RcvdMessage1.indexOf(","))).toFloat();
+    Quality = (myString.substring(myString.indexOf("Quality=") + strlen("Quality="),myString.indexOf(","))).toFloat();
     Serial.println(Quality, 5);
+    myString.remove(0, myString.indexOf("Quantity="));
     Serial.print("Quantity is: ");
-    Quantity = (RcvdMessage1.substring(RcvdMessage1.indexOf("Quantity=") + 9, RcvdMessage1.indexOf(","))).toFloat();
-    Serial.println(Quantity, 5);
+    Quantity = (myString.substring(myString.indexOf("Quantity=") + strlen("Quantity="),myString.indexOf(","))).toInt();
+    Serial.println(Quantity);
+    myString.remove(0, myString.indexOf("Latitude="));
     Serial.print("Latitude is: ");
-    Latitude = (RcvdMessage1.substring(RcvdMessage1.indexOf("Latitude=") + 9, RcvdMessage1.indexOf(","))).toFloat();
+    Latitude = (myString.substring(myString.indexOf("Latitude=") + 9,myString.indexOf(","))).toFloat();
     Serial.println(Latitude, 6);
+    myString.remove(0, myString.indexOf("Longitude="));
     Serial.print("Longitude is: ");
-    Longitude = (RcvdMessage1.substring(RcvdMessage1.indexOf("Longitude=") + 10)).toFloat();
+    Longitude = (myString.substring(myString.indexOf("Longitude=") + 10)).toFloat();
     Serial.println(Longitude, 6);
-    SendThingspeak(Quality, Quantity, Latitude, Longitude);
+    //SendThingspeak(Quality, Quantity, Latitude, Longitude);
+    SendWebhost(Quality, Quantity, Latitude, Longitude);
 }
 
 void SendThingspeak(float Quality, float Quantity, float Latitude, float Longitude)

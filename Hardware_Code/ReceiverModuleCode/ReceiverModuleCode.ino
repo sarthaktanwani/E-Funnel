@@ -12,6 +12,7 @@ const char* server = "api.thingspeak.com";
 WiFiClient client;
 
 const char* host = "urfuel.000webhostapp.com";
+
 const int httpsPort = 443;
 
 // Use web browser to view and copy
@@ -224,7 +225,10 @@ void SendWebhost(float Quality, float Quantity, float Latitude, float Longitude)
     Serial.println("certificate doesn't match");
   }
 
-  String url = "/insertintable.php?value=" + String(Quantity) + "&&user_id=7&&utime=" + String(Longitude, 6);
+//  String url = "/insertintable.php?value=" + String(Quantity) + "&&user_id=7&&utime=" + String(Longitude, 6);
+  String url = "/insert_vehicle_device_reading.php?amount=" + String(Quantity) + "&&user_id=7&&time=06:37:42" + "&&Latitude=" + String(Latitude, 6) + "&&Longitude=" + String(Longitude, 6);
+  url += "&&GSM_NO=9810004136";
+  url += "&&Vehicle_Reg_No=DL3CAD6347";
   Serial.print("requesting URL: ");
   Serial.println(url);
 

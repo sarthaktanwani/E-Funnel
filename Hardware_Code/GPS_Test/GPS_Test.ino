@@ -1,7 +1,7 @@
   #include <TinyGPS++.h>
 #include <SoftwareSerial.h>
 /* Create object named bt of the class SoftwareSerial */
-SoftwareSerial GPS_SoftSerial(10, 11);/* (Rx, Tx) */
+SoftwareSerial GPS_SoftSerial(3, 5);/* (Rx, Tx) */
 /* Create an object named gps of the class TinyGPSPlus */
 TinyGPSPlus gps;      
 

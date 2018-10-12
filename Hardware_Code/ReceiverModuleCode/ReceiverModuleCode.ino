@@ -5,15 +5,15 @@
 #include <ESP8266WiFi.h>
 
 String apiWritekey = "3DGEBMEGUHCHM0TQ"; // replace with your THINGSPEAK WRITEAPI key here
-const char* ssid = "Internet"; // your wifi SSID name
-const char* password = "photostate" ;// wifi pasword
+const char* ssid = "Shanu1"; // your wifi SSID name
+const char* password = "20167635" ;// wifi pasword
  
 const char* server = "api.thingspeak.com";
 WiFiClient client;
 
 const char* host = "urfuel.000webhostapp.com";
-
-const int httpsPort = 443;
+//const char* host = "192.168.43.199";
+const int httpsPort = 443 ;
 
 // Use web browser to view and copy
 // SHA1 fingerprint of the certificate
@@ -226,8 +226,8 @@ void SendWebhost(float Quality, float Quantity, float Latitude, float Longitude)
   }
 
 //  String url = "/insertintable.php?value=" + String(Quantity) + "&&user_id=7&&utime=" + String(Longitude, 6);
-  String url = "/insert_vehicle_device_reading.php?amount=" + String(Quantity) + "&&user_id=7&&time=06:37:42" + "&&Latitude=" + String(Latitude, 6) + "&&Longitude=" + String(Longitude, 6);
-  url += "&&GSM_NO=9810004136";
+  String url = "/insert_vehicle_device_reading.php?Amount=" + String(Quantity) + "&&user_id=1&&time=06:37:42" + "&&Latitude=" + String(Latitude, 6) + "&&Longitude=" + String(Longitude, 6);
+  url += "&&GSM_NO=" + Number1;
   url += "&&Vehicle_Reg_No=DL3CAD6347";
   Serial.print("requesting URL: ");
   Serial.println(url);

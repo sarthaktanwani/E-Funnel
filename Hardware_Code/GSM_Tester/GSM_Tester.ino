@@ -1,8 +1,8 @@
-#include "SoftwareSerial.h"
+#include <SoftwareSerial.h>
 
 
-SoftwareSerial GPRS(14, 12, false, 256);
-//SoftwareSerial GPRS(5, 6);
+//SoftwareSerial GPRS(14, 12, false, 256);
+SoftwareSerial GPRS(10, 11);
 String outMessage = "Message form GSM Module";
 String destinationNumber = "+917417464147";
 

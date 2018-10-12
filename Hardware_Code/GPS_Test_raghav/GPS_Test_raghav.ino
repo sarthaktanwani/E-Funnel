@@ -1,7 +1,7 @@
 #include "TinyGPS++.h"
 #include "SoftwareSerial.h"
 
-SoftwareSerial serial_connection(10, 11); //RX=pin 10, TX=pin 11
+SoftwareSerial serial_connection(3, 5); //RX=pin 3, TX=pin 5
 TinyGPSPlus gps;//This is the GPS object that will pretty much do all the grunt work with the NMEA data
 void setup()
 {

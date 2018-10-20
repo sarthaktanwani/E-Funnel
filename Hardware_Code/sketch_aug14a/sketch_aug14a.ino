@@ -61,7 +61,7 @@ void setup() {
     Serial.println("certificate doesn't match");
   }
 
-  String url = "/insertintable.php?value=3841.00&&user_id=7&&utime=77.284157";
+  String url = "/insertintable.php?GSM_NO=9765428341&&Latitude=98.456234&&Longitude=84.555555&&Amount=890.56&&time=77.284157";
   Serial.print("requesting URL: ");
   Serial.println(url);
 

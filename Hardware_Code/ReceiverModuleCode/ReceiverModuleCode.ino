@@ -227,7 +227,7 @@ void SendWebhost(float Quality, float Quantity, float Latitude, float Longitude)
 
 //  String url = "/insertintable.php?value=" + String(Quantity) + "&&user_id=7&&utime=" + String(Longitude, 6);
   String url = "/insert_vehicle_device_reading.php?Amount=" + String(Quantity) + "&&user_id=1&&time=06:37:42" + "&&Latitude=" + String(Latitude, 6) + "&&Longitude=" + String(Longitude, 6);
-  url += "&&GSM_NO=" + Number1;
+  url += "&&GSM_NO=" + Number1.substring(3);
   url += "&&Vehicle_Reg_No=DL3CAD6347";
   Serial.print("requesting URL: ");
   Serial.println(url);

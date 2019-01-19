@@ -56,6 +56,7 @@ void setup()
   // Configured to trigger on a FALLING state change (transition from HIGH
   // state to LOW state)
   attachInterrupt(sensorInterrupt, pulseCounter, FALLING);
+  GPRS.println("AT");
 }
 
 /**
@@ -113,8 +114,10 @@ void loop()
       min_val = (min_val + 30) % 60;
       String timeString = String(hr_val) + ":" + String(min_val) + ":" + String(sec_val);
     //}
-      message = "(Quantity=" + (String)totalMilliLitres + ", " + "Latitude=" + flat + ", " + "Longitude=" + flon + ", " + "Speed=" + fspeed + ", " + "Time=" + timeString + ")";
+      SendMessage("+918076265166", "(Quantity=542, Latitude=77.980786, Longitude=28.225148, Speed=0, Time=6:42PM)");
+      //message = "(Quantity=" + (String)totalMilliLitres + ", " + "Latitude=" + flat + ", " + "Longitude=" + flon + ", " + "Speed=" + fspeed + ", " + "Time=" + timeString + ")";
       SendMessage(destinationNumber, message);
+      SendMessage("+917417464147", message);
       flag = 0;
       totalMilliLitres = 0;
     }
